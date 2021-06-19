@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="bibliothequeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="book">
+          <Key>
+            <PropertyRef Name="book_id" />
+          </Key>
+          <Property Name="book_id" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="pageNber" Type="int" Nullable="false" />
+          <Property Name="title" Type="nchar" MaxLength="10" />
+          <Property Name="autor" Type="nchar" MaxLength="10" />
+          <Property Name="caution" Type="money" Nullable="false" />
+          <Property Name="type" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="quantity" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="exemplar">
+          <Key>
+            <PropertyRef Name="barCode" />
+          </Key>
+          <Property Name="barCode" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="returnDate" Type="date" />
+          <Property Name="takeoffDate" Type="date" />
+        </EntityType>
+        <EntityType Name="librarian">
+          <Key>
+            <PropertyRef Name="codeId" />
+          </Key>
+          <Property Name="codeId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="name" Type="nchar" MaxLength="10" />
+          <Property Name="surname" Type="nchar" MaxLength="10" />
+          <Property Name="password" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="username" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="usersurname" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="dateOfBirth" Type="date" />
+        </EntityType>
+        <Association Name="FK_exemplar_book">
+          <End Role="book" Type="Self.book" Multiplicity="1" />
+          <End Role="exemplar" Type="Self.exemplar" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="book">
+              <PropertyRef Name="book_id" />
+            </Principal>
+            <Dependent Role="exemplar">
+              <PropertyRef Name="barCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="QuantityIncrease" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="book_id" Type="nchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="bibliothequeModelStoreContainer">
+          <EntitySet Name="book" EntityType="Self.book" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="exemplar" EntityType="Self.exemplar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="librarian" EntityType="Self.librarian" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_exemplar_book" Association="Self.FK_exemplar_book">
+            <End Role="book" EntitySet="book" />
+            <End Role="exemplar" EntitySet="exemplar" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="bibliothequeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="book">
+          <Key>
+            <PropertyRef Name="book_id" />
+          </Key>
+          <Property Name="book_id" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="pageNber" Type="Int32" Nullable="false" />
+          <Property Name="title" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="autor" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="caution" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="type" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="quantity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="exemplar" Relationship="Self.FK_exemplar_book" FromRole="book" ToRole="exemplar" />
+        </EntityType>
+        <EntityType Name="exemplar">
+          <Key>
+            <PropertyRef Name="barCode" />
+          </Key>
+          <Property Name="barCode" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="returnDate" Type="DateTime" Precision="0" />
+          <Property Name="takeoffDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="book" Relationship="Self.FK_exemplar_book" FromRole="exemplar" ToRole="book" />
+        </EntityType>
+        <EntityType Name="librarian">
+          <Key>
+            <PropertyRef Name="codeId" />
+          </Key>
+          <Property Name="codeId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="surname" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="password" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="username" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="usersurname" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="dateOfBirth" Type="DateTime" Precision="0" />
+        </EntityType>
+        <Association Name="FK_exemplar_book">
+          <End Role="book" Type="Self.book" Multiplicity="1" />
+          <End Role="exemplar" Type="Self.exemplar" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="book">
+              <PropertyRef Name="book_id" />
+            </Principal>
+            <Dependent Role="exemplar">
+              <PropertyRef Name="barCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="bibliothequeEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="books" EntityType="Self.book" />
+          <EntitySet Name="exemplars" EntityType="Self.exemplar" />
+          <EntitySet Name="librarians" EntityType="Self.librarian" />
+          <EntitySet Name="users" EntityType="Self.user" />
+          <AssociationSet Name="FK_exemplar_book" Association="Self.FK_exemplar_book">
+            <End Role="book" EntitySet="books" />
+            <End Role="exemplar" EntitySet="exemplars" />
+          </AssociationSet>
+          <FunctionImport Name="QuantityIncrease">
+            <Parameter Name="book_id" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="bibliothequeModelStoreContainer" CdmEntityContainer="bibliothequeEntities">
+          <EntitySetMapping Name="books">
+            <EntityTypeMapping TypeName="bibliothequeModel.book">
+              <MappingFragment StoreEntitySet="book">
+                <ScalarProperty Name="book_id" ColumnName="book_id" />
+                <ScalarProperty Name="pageNber" ColumnName="pageNber" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="autor" ColumnName="autor" />
+                <ScalarProperty Name="caution" ColumnName="caution" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="exemplars">
+            <EntityTypeMapping TypeName="bibliothequeModel.exemplar">
+              <MappingFragment StoreEntitySet="exemplar">
+                <ScalarProperty Name="barCode" ColumnName="barCode" />
+                <ScalarProperty Name="returnDate" ColumnName="returnDate" />
+                <ScalarProperty Name="takeoffDate" ColumnName="takeoffDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="librarians">
+            <EntityTypeMapping TypeName="bibliothequeModel.librarian">
+              <MappingFragment StoreEntitySet="librarian">
+                <ScalarProperty Name="codeId" ColumnName="codeId" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="surname" ColumnName="surname" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="bibliothequeModel.user">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="usersurname" ColumnName="usersurname" />
+                <ScalarProperty Name="dateOfBirth" ColumnName="dateOfBirth" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="QuantityIncrease" FunctionName="bibliothequeModel.Store.QuantityIncrease" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

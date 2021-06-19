@@ -1,0 +1,80 @@
+﻿@model SGBDProject.Models.book
+@{    
+        ViewBag.Title = "addBook";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <div class="table-responsive w-auto p-3">
+        <form action="" method="post" id="formBooks">
+            <table class="table">
+                <tr class="bg-dark text-white">
+                    <th>ID</th>
+                    <th>Pagination</th>
+                    <th>Titre</th>
+                    <th>Auteur</th>
+                    <th>Caution</th>
+                    <th>Type</th>
+                    <th>Quantité</th>
+                    <th>Action</th>
+                </tr>
+                @foreach (var book in ViewBag.listBook)
+                {
+
+                    <tr>
+                        <td>@book.book_id</td>
+                        <td>@book.pageNber</td>
+                        <td>@book.title</td>
+                        <td>@book.autor</td>
+                        <td>@book.caution</td>
+                        <td>@book.type</td>
+                        <td>@book.quantity</td>
+                        <td>
+                            <a href="~/book/Delete/@book.book_id" class="btn btn-danger rounded-circle">DEL</a>
+                            <a href="~/book/Edit/@book.book_id" class="btn btn-warning rounded-circle">Ed</a>
+                        </td>
+                    </tr>
+                }
+            <tfoot>
+                @if (Model != null)
+                {
+                    <tr class=" bg-dark">
+                        <td><input type="text" id="book_id" name="book_id" value="@Model.book_id" class=" mw-25 border-0 form-control" /></td>
+                        <td><input type="number" id="pageNber" name="pageNber" value="@Model.pageNber" class="form-control" /></td>
+                        <td><input type="text" id="title" name="title" value="@Model.title" class="form-control" /></td>
+                        <td><input type="text" id="autor" name="autor" value="@Model.autor" class="form-control" /></td>
+                        <td><input type="number" id="caution" name="caution" value="@Model.caution" class="form-control" /></td>
+                        <td>
+                            <select typeof="text" class="form-control" name="type" value="@Model.type" id="type">
+                                <option>Livre</option>
+                                <option>Revue</option>
+                            </select>
+                        </td>
+                        <td><input type="number" id="quantity" name="quantity" value="@Model.quantity" class="form-control" /></td>
+                        <td><input type="submit" value="OK" id="enregister" class="btn btn-primary rounded-circle" /></td>
+                    </tr>
+                }
+                @if (Model == null)
+                {
+                    <tr class="table-secondary">
+                        <td><input type="text" id="book_id" name="book_id" class=" mw-25 border-0 form-control" placeholder="ID"/></td>
+                        <td><input type="number" id="pageNber" name="pageNber" class="form-control" placeholder="Nombre de pages" /></td>
+                        <td><input type="text" id="title" name="title" class="form-control" placeholder="Titre" /></td>
+                        <td><input type="text" id="autor" name="autor" class="form-control"  placeholder="Auteur"/></td>
+                        <td><input type="number" id="caution" name="caution" class="form-control" placeholder="Caution"/></td>
+                        <td>
+                            <select class="form-control" name="type" id="type">
+                                <option>Livre</option>
+                                <option>Revue</option>
+                            </select>
+                        </td>
+                        <td><input type="number" id="quantity" name="quantity" class="form-control" placeholder="Quantity" /></td>
+                        <td><input type="submit" value="OK" id="enregister" class="btn btn-primary rounded-circle" /></td>
+                    </tr>
+                }
+
+            </tfoot>
+            </table>
+        </form>
+    </div>
+</div>
